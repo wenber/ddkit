@@ -27,6 +27,7 @@ module.exports = {
         'react-templates-loader@0.4.0',
         'antd@0.12.15',
         'redux@3.5.2',
+        'react-dom@15.0.1',
         'redux-thunk@2.0.1',
         'react-redux@4.4.5',
         'lodash',
