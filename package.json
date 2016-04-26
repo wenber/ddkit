@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wenber/ddKit.git"
+    "url": "git+https://github.com/wenber/ddkit.git"
   },
   "keywords": [
     "react脚手架"
@@ -19,9 +19,9 @@
   "author": "wenber",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wenber/ddKit/issues"
+    "url": "https://github.com/wenber/ddkit/issues"
   },
-  "homepage": "https://github.com/wenber/ddKit#readme",
+  "homepage": "https://github.com/wenber/ddkit#readme",
   "dependencies": {
     "babel-core": "^6.7.7",
     "chalk": "^1.1.3",
