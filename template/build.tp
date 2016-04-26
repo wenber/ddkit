@@ -37,16 +37,16 @@ if [ "$stage" = "both" ]; then
     rm -rf 'release';
     npm run deploy;
     ret=$? && [[ "$ret" != "0" ]] && exit $ret;
-    tar -zcf ./out/@##@.tar.gz release;
+    tar -zcf ./out/@name@.tar.gz release;
 
     rm -rf 'release';
     npm run stage;
     ret=$? && [[ "$ret" != "0" ]] && exit $ret;
-    tar -zcf ./out/@##@-offline.tar.gz release;
+    tar -zcf ./out/@name@-offline.tar.gz release;
 else
     rm -rf 'release';
     npm run stage;
     ret=$? && [[ "$ret" != "0" ]] && exit $ret;
-    tar -zcf ./out/@##@-offline.tar.gz release;
+    tar -zcf ./out/@name@-offline.tar.gz release;
 fi
 exit 0;

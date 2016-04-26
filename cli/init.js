@@ -32,12 +32,31 @@ module.exports = function () {
             util.logSuccess('安装项目依赖完成');
             return spawn('npm', ['install', '--save-dev'].concat(config.devDependencies));
         })
-        // 代码巡检脚本
+        // 代码巡检脚本等同步任务
         .then(function () {
             util.logSuccess('安装环境依赖完成');
+
             var content = fs.readFileSync(path.resolve(__dirname, '../template/fecheck.tp'), 'UTF-8');
             content = content.replace('@name@', config.proName);
             fs.writeFileSync(path.resolve(process.cwd(), './fetch'), content, 'UTF-8');
+
+            cp(path.resolve(__dirname, '../template/eslintignore.tp'), process.cwd() + '/.eslintignore');
+            cp(path.resolve(__dirname, '../template/gitignore.tp'), process.cwd() + '/.gitignore');
             util.logSuccess('代码巡检脚本初始化完成');
+
+            content = fs.readFileSync(path.resolve(__dirname, '../template/build.tp'), 'UTF-8');
+            content = content.replace('@name@', config.proName);
+            fs.writeFileSync(path.resolve(process.cwd(), './build.sh'), content, 'UTF-8');
+            util.logSuccess('编译脚本初始化完成');
+
+            content = fs.readFileSync(path.resolve(__dirname, '../template/build.tp'), 'UTF-8');
+            content = content.replace('@name@', config.proName);
+            fs.writeFileSync(path.resolve(process.cwd(), './build.sh'), content, 'UTF-8');
+            util.logSuccess('编译脚本初始化完成');
+
+            cp(path.resolve(__dirname, '../template/wp.config.tp'), process.cwd() + '/wp.config.js');
+            cp(path.resolve(__dirname, '../template/wp.config.release.tp'), process.cwd() + '/wp.config.release.js');
+            cp(path.resolve(__dirname, '../template/wp.config.staging.tp'), process.cwd() + '/wp.config.staging.js');
+            util.logSuccess('webpack配置初始化完成');
         });
 };
