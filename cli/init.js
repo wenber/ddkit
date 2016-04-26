@@ -12,14 +12,14 @@ module.exports = function () {
     spawn('npm', ['init'])
         // 创建项目目录结构
         .then(function () {
-            return spawn('mdkir', [].concat(config.directories));
+            return spawn('mkdir', [].concat(config.directories));
         })
         // 安装项目依赖
         .then(function () {
-            return spawn('npm', ['install', '-S'].concat(config.dependencies));
+            return spawn('npm', ['install', '--save'].concat(config.dependencies));
         })
         // 安装环境依赖
         .then(function () {
-            return spawn('npm', ['install', '-S'].concat(config.devDependencies));
+            return spawn('npm', ['install', '--save-dev'].concat(config.devDependencies));
         });;
 };

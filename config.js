@@ -45,6 +45,7 @@ module.exports = {
         'react-hot-loader',
         'style-loader',
         'url-loader',
+        'webpack',
         'webpack-config-loader',
         'webpack-dev-middleware',
         'webpack-dev-server'
