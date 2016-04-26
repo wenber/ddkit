@@ -12,7 +12,7 @@ module.exports = function () {
     spawn('npm', ['init'])
         // 创建项目目录结构
         .then(function () {
-            return spawn('mkdir', [].concat(config.directories));
+            return spawn('mkdir', ['-p'].concat(config.directories));
         })
         // 安装项目依赖
         .then(function () {

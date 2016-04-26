@@ -8,7 +8,10 @@ module.exports = {
         'debug',
         'gulp',
         'middleware',
-        'src'
+        'src/resource',
+        'src/component',
+        'src/common/util',
+        'src/page'
     ],
     files: [
         'README.md'
