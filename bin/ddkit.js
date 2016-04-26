@@ -1,4 +1,4 @@
-#!/usr/bin/env node-debug
+#!/usr/bin/env node
 
 /**
  * @file 入口文件
