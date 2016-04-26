@@ -3,22 +3,20 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var wpConfig = function () {
     return {
         entry: {
-            common: ['react', 'antd'],
+            common: ['react', 'antd', 'react-router', 'lodash'],
             entry: [
                 'webpack-dev-server/client?http://localhost:8080',
                 'webpack/hot/only-dev-server',
-                './src/router'
+                './src/entryRouter'
             ]
         },
         debug: true,
         devtool: 'cheap-module-inline-source-map',
         output: {
-            // @NOTE: https://github.com/webpack/webpack-dev-server/issues/88
-            // use to solve the proble which path is unvalid
             path: '/',
             publicPath: '/asset/',
             filename: '[name].js',
-            chunkFilename: 'entry.biz.[hash].js'
+            chunkFilename: '[name].biz.[hash].js'
         },
         module: {
             loaders: [
