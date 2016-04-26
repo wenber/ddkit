@@ -1,0 +1,52 @@
+#!/bin/bash
+
+###############################################################################
+# Process options
+###############################################################################
+
+# 先跑代码测试
+sh fecheck
+
+while getopts "s:" options
+do
+    case $options in
+        s)
+            stage=$OPTARG
+            if [ -z $stage ]; then
+                stage="default"
+            fi
+            ;;
+        ?)
+            echo "unknown option $OPTARG"
+            ;;
+    esac
+done
+
+
+###############################################################################
+# Prepare build environment
+#
+#   Checkout edp build environment from svn and extract in ${JOBDIR}
+###############################################################################
+# Clean before build
+
+rm -rf 'out';
+mkdir 'out';
+
+if [ "$stage" = "both" ]; then
+    rm -rf 'release';
+    npm run deploy;
+    ret=$? && [[ "$ret" != "0" ]] && exit $ret;
+    tar -zcf ./out/@##@.tar.gz release;
+
+    rm -rf 'release';
+    npm run stage;
+    ret=$? && [[ "$ret" != "0" ]] && exit $ret;
+    tar -zcf ./out/@##@-offline.tar.gz release;
+else
+    rm -rf 'release';
+    npm run stage;
+    ret=$? && [[ "$ret" != "0" ]] && exit $ret;
+    tar -zcf ./out/@##@-offline.tar.gz release;
+fi
+exit 0;

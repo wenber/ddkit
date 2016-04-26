@@ -3,15 +3,18 @@
  * @author wenber
  */
 module.exports = {
+    // 项目的名称，和package.json中的name字段值保持一致
+    proName: '',
     directories: [
         'config',
         'debug',
         'gulp',
         'middleware',
-        'src/resource',
+        'src/resource/style',
         'src/component',
         'src/common/util',
-        'src/page'
+        'src/page',
+        'src/resource/img'
     ],
     files: [
         'README.md'
@@ -51,6 +54,8 @@ module.exports = {
         'webpack',
         'webpack-config-loader',
         'webpack-dev-middleware',
-        'webpack-dev-server'
+        'webpack-dev-server',
+        'eslint',
+        'eslint-plugin-react'
     ]
 };
