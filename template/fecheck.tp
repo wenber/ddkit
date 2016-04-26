@@ -1,0 +1,52 @@
+#!/bin/sh
+rm -f .logfile
+rm -f .checkfile
+
+#logs=$(git log --after="yesterday" --stat) # 每天的定时可以做
+logs=$(git log -n 5 --stat) # 最近一次的
+echo "$logs" >> .logfile
+
+if [ "$logs" = "" ]; then
+    exit 0
+fi
+
+pass=true
+while read line
+do
+    flag=$(echo "$line" | grep '[a-z0-9/]\.js ' | awk '{print $1}')
+
+    if [ "$flag" != "" ];then
+
+        while read line2
+        do
+            flag=`echo "$flag" | grep -v $line2`
+            flag=$flag
+        done < '.eslintignore'
+
+        if [ "$flag" != "" ];then
+            result=$(eslint ${flag})
+            if [ "$result" != "" ]; then
+                echo "ESLint Failed: ${line}" >> .checkfile
+                echo "$result" >> .checkfile
+                pass=false
+            else
+                echo "ESLint OK: ${line}" >> .checkfile
+            fi
+        else
+            echo "$line" >> .checkfile
+        fi
+    else
+        echo "$line" >> .checkfile
+    fi
+done < .logfile
+
+echo "\nJavaScript validation complete\n"
+if ! $pass; then
+    echo "CHECK FAILED:Your push contains files that should pass ESLint but do not."
+    # 发送邮件
+    mail -s "前端代码巡检-@name@系统" fe@zufangit.cn  < .checkfile
+    exit 0
+else
+    echo "CHECK SUCCEEDED"
+    exit 0
+fi
