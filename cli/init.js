@@ -14,6 +14,7 @@ var util = require('../lib/util');
 module.exports = function () {
     // 初始项目
     util.logSuccess('初始化项目开始');
+
     spawn('npm', ['init'])
         // 创建项目目录结构
         .then(function () {
@@ -32,38 +33,48 @@ module.exports = function () {
             util.logSuccess('安装项目依赖完成');
             return spawn('npm', ['install', '--save-dev'].concat(config.devDependencies));
         })
-        // 代码巡检脚本等同步任务
+        // 同步任务
         .then(function () {
             util.logSuccess('安装环境依赖完成');
-            // 代码巡检脚本
-            var content = fs.readFileSync(path.resolve(__dirname, '../template/fecheck.tp'), 'UTF-8');
-            content = content.replace('@name@', config.proName);
-            fs.writeFileSync(path.resolve(process.cwd(), './fetch'), content, 'UTF-8');
-            cp(path.resolve(__dirname, '../template/eslintignore.tp'), process.cwd() + '/.eslintignore');
-            cp(path.resolve(__dirname, '../template/gitignore.tp'), process.cwd() + '/.gitignore');
-            util.logSuccess('代码巡检脚本初始化完成');
-            // 编译脚本
-            content = fs.readFileSync(path.resolve(__dirname, '../template/build.tp'), 'UTF-8');
-            content = content.replace('@name@', config.proName);
-            fs.writeFileSync(path.resolve(process.cwd(), './build.sh'), content, 'UTF-8');
-            content = fs.readFileSync(path.resolve(__dirname, '../template/build.tp'), 'UTF-8');
-            content = content.replace('@name@', config.proName);
-            fs.writeFileSync(path.resolve(process.cwd(), './build.sh'), content, 'UTF-8');
-            util.logSuccess('编译脚本初始化完成');
-            // webpack配置
-            cp(path.resolve(__dirname, '../template/wp.config.tp'), process.cwd() + '/wp.config.js');
-            cp(path.resolve(__dirname, '../template/wp.config.release.tp'), process.cwd() + '/wp.config.release.js');
-            cp(path.resolve(__dirname, '../template/wp.config.staging.tp'), process.cwd() + '/wp.config.staging.js');
-            util.logSuccess('webpack配置初始化完成');
-            // react-router
-            cp(path.resolve(__dirname, '../template/entryRouter.tp'), process.cwd() + '/src/entryRouter.js');
-            cp(path.resolve(__dirname, '../template/App.tp'), process.cwd() + '/src/page/App.js');
-            cp(path.resolve(__dirname, '../template/index.html.tp'), process.cwd() + '/index.html');
-            util.logSuccess('react-router初始化完成');
-            // common公共文件
-            cp(path.resolve(__dirname, '../template/common/ajax.tp'), process.cwd() + '/src/common/util/ajax.js');
-            cp(path.resolve(__dirname, '../template/common/guid.tp'), process.cwd() + '/src/common/util/guid.js');
-            cp(path.resolve(__dirname, '../template/common/url.tp'), process.cwd() + '/src/common/util/url.js');
-            util.logSuccess('common公共文件初始化完成');
+            // root
+            var filePath = path.resolve(__dirname, '../template/root');
+            var filesList = fs.readdirSync(filePath);
+            filesList.forEach(function (item) {
+                // 模板类，需要特殊处理,目前只替换项目名，如果有其他需求，这里细化判断
+                if (/tp$/.test(item)) {
+                    content = fs.readFileSync(filePath + '/' + item, 'UTF-8');
+                    content = content.replace(/\@name\@/g, config.proName);
+                    fs.writeFileSync(process.cwd() + '/' + path.basename(item, '.tp'), content, 'UTF-8');
+                }
+                // 普通文件，直接拷贝
+                else {
+                    cp(path.resolve(filePath, item), process.cwd() + '/' + item);
+                }
+            });
+            copyPlainFile('common/util', 'src/');
+            copyPlainFile('debug');
+            copyPlainFile('middleware');
+            copyPlainFile('gulp');
+            copyPlainFile('gulp/util');
+            copyPlainFile('page', 'src/');
+            util.logSuccess('项目目录文件初始化完成');
         });
+};
+
+/**
+ * 直接拷贝文件
+ * @param {string} sourceDir 源目录名
+ * @param {string} destDir 目的目录名
+ */
+function copyPlainFile(sourceDir, destDir) {
+    destDir = destDir || '';
+    filePath = path.resolve(__dirname, '../template/' + sourceDir);
+    filesList = fs.readdirSync(filePath);
+    var sourcePath = '';
+    filesList.forEach(function (item) {
+        sourcePath = path.resolve(filePath, item);
+        if (fs.existsSync(sourcePath) && fs.statSync(sourcePath).isFile()) {
+            cp(dirPath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
+        }
+    });
 };

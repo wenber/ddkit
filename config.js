@@ -8,7 +8,7 @@ module.exports = {
     directories: [
         'config',
         'debug',
-        'gulp',
+        'gulp/util',
         'middleware',
         'src/resource/style',
         'src/component',
