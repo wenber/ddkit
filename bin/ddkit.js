@@ -15,4 +15,18 @@ program
         init();
     });
 
+program
+    .command('add')
+    .description('添加模块')
+    .action(function(){
+    	var argv = process && process.argv;
+
+    	//name TODO
+    	var name = '';
+    	argv.length > 3 ? name = argv[3] : name = 'module';
+    	
+        var add = require('../cli/add');
+        add(name);
+    });
+
 program.parse(process.argv);

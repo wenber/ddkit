@@ -74,7 +74,7 @@ function copyPlainFile(sourceDir, destDir) {
     filesList.forEach(function (item) {
         sourcePath = path.resolve(filePath, item);
         if (fs.existsSync(sourcePath) && fs.statSync(sourcePath).isFile()) {
-            cp(dirPath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
+            cp(sourcePath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
         }
     });
 };
