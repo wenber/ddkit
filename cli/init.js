@@ -57,6 +57,7 @@ module.exports = function () {
             copyPlainFile('gulp');
             copyPlainFile('gulp/util');
             copyPlainFile('page', 'src/');
+            copyPlainFile('config');
             util.logSuccess('项目目录文件初始化完成');
         });
 };
@@ -74,7 +75,7 @@ function copyPlainFile(sourceDir, destDir) {
     filesList.forEach(function (item) {
         sourcePath = path.resolve(filePath, item);
         if (fs.existsSync(sourcePath) && fs.statSync(sourcePath).isFile()) {
-            cp(dirPath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
+            cp(sourcePath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
         }
     });
 };
