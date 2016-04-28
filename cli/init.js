@@ -57,6 +57,7 @@ module.exports = function () {
             copyPlainFile('gulp');
             copyPlainFile('gulp/util');
             copyPlainFile('page', 'src/');
+            copyPlainFile('config');
             util.logSuccess('项目目录文件初始化完成');
         });
 };
