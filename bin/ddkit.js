@@ -18,13 +18,7 @@ program
 program
     .command('add')
     .description('添加模块')
-    .action(function(){
-    	var argv = process && process.argv;
-
-    	//name TODO
-    	var name = '';
-    	argv.length > 3 ? name = argv[3] : name = 'module';
-    	
+    .action(function(name){
         var add = require('../cli/add');
         add(name);
     });
