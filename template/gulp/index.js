@@ -1,6 +1,5 @@
 import fs from 'fs';
 import gulp from 'gulp';
-// import {exec} from 'child_process';
 
 // blacklist for itself
 const blacklist = ['index.js', 'util'];
