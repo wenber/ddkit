@@ -11,8 +11,7 @@ module.exports = {
         'gulp/util',
         'middleware',
         'src/resource/style',
-        'src/component',
-        'src/common/util',
+        'src/common',
         'src/page',
         'src/resource/img'
     ],
@@ -25,6 +24,7 @@ module.exports = {
         'react-router-limiter@1.0.8',
         'react-templates@0.4.3',
         'react-templates-loader@0.4.0',
+        'html-webpack-plugin@2.16.0',
         'antd@0.12.15',
         'redux@3.5.2',
         'react-dom@15.0.1',
@@ -37,19 +37,18 @@ module.exports = {
         'extract-text-webpack-plugin'
     ],
    devDependencies: [
-        'autoprefixer-loader',
+        'postcss-loader',
         'babel',
         'babel-loader',
-        'babel-tape-runner',
-        'babel-register',
-        'babel-preset-stage-3',
         'babel-cli',
         'babel-core',
+        'babel-tape-runner',
+        'babel-register',
+        'babel-preset-stage-0',
+        'babel-preset-react',
         'babel-preset-es2015',
         'css-loader',
         'file-loader',
-        'gulp',
-        'gulp-util',
         'jsx-loader',
         'less',
         'less-loader',
@@ -62,49 +61,15 @@ module.exports = {
         'webpack-dev-middleware',
         'webpack-dev-server',
         'eslint',
-        'eslint-plugin-react'
+        'eslint-plugin-react',
+        'eslint-config-airbnb',
+        'eslint-plugin-import',
+        'eslint-plugin-jsx-a11y'
     ],
-    eslintConfig: {
-        rules: {
-            semi: [2, 'always'],
-            quotes: [2, 'single'],
-            'react/jsx-boolean-value': 1,
-            eqeqeq: 2,
-            strict: 2,
-            'no-console': 1,
-            'no-alert': 1,
-            'max-len': [0, 120]
-        },
-        parserOptions: {
-            ecmaVersion: 6,
-            sourceType: 'module',
-            ecmaFeatures: {
-                jsx: true,
-                arrowFunctions: true,
-                destructuring: true,
-                classes: true,  
-                defaultParams: true,
-                blockBindings: true,
-                modules: true
-            }
-        },
-        env: {
-            browser: true,
-            node: true
-        },
-        plugins: [
-            'react'
-        ],
-        globals: {
-            define: true,
-            Ajax: true
-        }
-    },
     scripts: {
-        start: 'node_modules/.bin/gulp',
-        deploy: 'npm run clean && node_modules/.bin/gulp deploy',
-        stage: 'npm run clean && NODE_ENV=staging node_modules/.bin/gulp stage',
-        clean: 'rm -rf release && mkdir ./release',
-        releaseStart: 'node ./service.js --release'
+        start: 'node ./devServer.js',
+        deploy: 'npm run clean && webpack --config webpack.config.release.js',
+        stage: 'npm run clean && webpack --config webpack.config.stage.js',
+        clean: 'rm -rf ./release rm -rf ./asset'
     }
 };
