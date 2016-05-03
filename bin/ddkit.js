@@ -15,4 +15,12 @@ program
         init();
     });
 
+program
+    .command('add')
+    .description('添加模块')
+    .action(function(name){
+        var add = require('../cli/add');
+        add(name);
+    });
+
 program.parse(process.argv);
