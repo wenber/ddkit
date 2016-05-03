@@ -10,17 +10,15 @@ var config = require('../config');
 var fs = require('fs');
 var path = require('path');
 var util = require('../lib/util');
+var _ = require('lodash');
+var packageJSON = {};
 
 module.exports = function () {
     // 初始项目
     util.logSuccess('初始化项目开始');
-
     spawn('npm', ['init'])
         // 创建项目目录结构
         .then(function () {
-            config.proName = JSON.parse(
-                fs.readFileSync(path.resolve(process.cwd(), './package.json'), 'UTF-8')
-            ).name;
             return spawn('mkdir', ['-p'].concat(config.directories));
         })
         // 安装项目依赖
@@ -36,6 +34,7 @@ module.exports = function () {
         // 同步任务
         .then(function () {
             util.logSuccess('安装环境依赖完成');
+            updatePackageConf();
             // root
             var filePath = path.resolve(__dirname, '../template/root');
             var filesList = fs.readdirSync(filePath);
@@ -51,31 +50,36 @@ module.exports = function () {
                     cp(path.resolve(filePath, item), process.cwd() + '/' + item);
                 }
             });
-            copyPlainFile('common/util', 'src/');
-            copyPlainFile('debug');
-            copyPlainFile('middleware');
-            copyPlainFile('gulp');
-            copyPlainFile('gulp/util');
-            copyPlainFile('page', 'src/');
-            copyPlainFile('config');
+            copyPlainFile('common', 'src/common');
+            copyPlainFile('debug', 'debug');
+            copyPlainFile('middleware', 'middleware');
+            copyPlainFile('page', 'src/page');
+            copyPlainFile('config', 'config');
+            copyPlainFile('src', 'src');
             util.logSuccess('项目目录文件初始化完成');
         });
 };
 
 /**
- * 直接拷贝文件
+ * 直接拷贝文件夹A
  * @param {string} sourceDir 源目录名
  * @param {string} destDir 目的目录名
  */
 function copyPlainFile(sourceDir, destDir) {
-    destDir = destDir || '';
-    filePath = path.resolve(__dirname, '../template/' + sourceDir);
-    filesList = fs.readdirSync(filePath);
-    var sourcePath = '';
-    filesList.forEach(function (item) {
-        sourcePath = path.resolve(filePath, item);
-        if (fs.existsSync(sourcePath) && fs.statSync(sourcePath).isFile()) {
-            cp(sourcePath, process.cwd() + '/' + destDir + sourceDir + '/' + item);
-        }
-    });
+    sourceDir = path.resolve(__dirname, '../template/' + sourceDir);
+    cp('-r', sourceDir + '/', process.cwd() + '/' + destDir + '/');
 };
+
+/**
+ * 更新项目的package.json
+ */
+function updatePackageConf() {
+    var packagePath = path.resolve(process.cwd(), './package.json');
+    packageJSON = JSON.parse(
+        fs.readFileSync(packagePath, 'UTF-8')
+    );
+    config.proName = packageJSON.name;
+    packageJSON.eslintConfig = config.eslintConfig;
+    packageJSON.scripts = _.extend(config.scripts, packageJSON.scripts);
+    fs.writeFileSync(packagePath, JSON.stringify(packageJSON, null, 2));
+}

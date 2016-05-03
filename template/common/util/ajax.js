@@ -3,13 +3,6 @@
  * @author Shiying Wang(wangshiying@baidu.com)
  */
 
-// TODO: IMPORT 不好用，why？？？
-// import Guid from './guid.js';
-// import Code from './../context/codeConfig.js'
-
-import Context from './../context/init';
-// import appConfig from 'webpack-config-loader!../../../config/app-config.js';
-
 module.exports = {
     send: function (url, param, base) {
 
