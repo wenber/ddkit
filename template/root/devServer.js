@@ -21,7 +21,7 @@ var server = new WebpackDevServer(compiler, {
     hot: true
 });
 
-fs.readdirSync('./middleware').forEach((file) => {
+fs.readdirSync('./middleware').forEach(function(file){
     var _middleware = require('./middleware/' + file);
     server.use(_middleware);
 });
