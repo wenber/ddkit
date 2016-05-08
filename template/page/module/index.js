@@ -1,3 +1,10 @@
+/**
+ * @file
+ *
+ * @author ${#author#}
+ * @date ${#date#}
+ */
+
 import React from 'react';
 import Tpl from './template.rt';
 import './style.less';
