@@ -11,11 +11,11 @@ var fs = require('fs');
 var path = require('path');
 var util = require('../lib/util');
 
-module.exports = function (name) {
+module.exports = function (name, type) {
     util.logSuccess('添加模块，模块名为：' + name);
     spawn('mkdir', ['src/page/' + name])
         .then(function () {
-            copyPlainFile('page/module', 'src/page/' + name);
+            copyPlainFile('module/' + type, 'src/page/' + name);
             addInfo2Index(process.cwd() + '/src/page/' + name + '/index.js');
             util.logSuccess('添加模块 ' + name + ' 完成');
         });
