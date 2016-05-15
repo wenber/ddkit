@@ -7,4 +7,6 @@
 
 - 添加一个react模块：ddkit add -r `moduleName`
 
-- 添加一个redux模块：ddkit add -x `moduleName`（暂不支持）
+- 添加一个redux模块：ddkit add -x `moduleName`
+
+- 注意：不允许添加重名模块，即不能用一个新的模块去覆盖一个已有模块
