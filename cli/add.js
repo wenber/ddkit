@@ -12,11 +12,23 @@ var path = require('path');
 var util = require('../lib/util');
 
 module.exports = function (name, type) {
-    util.logSuccess('添加模块，模块名为：' + name);
-    spawn('mkdir', ['src/page/' + name])
+    util.logSuccess('添加模块开始，模块名为：' + name);
+    var currDir = process.cwd();
+    // 命令没有在根目录运行,则向上查找，直到找到package.json
+    while (!fs.existsSync(currDir + '/package.json')) {
+        currDir = path.resolve(currDir, '../');
+    }
+
+    // 不允许添加重名的模块
+    if (fs.existsSync(currDir + '/src/page/' + name)) {
+        util.logFail('已经存在名为：' + name + '的模块，请重新命名模块');
+        return false;
+    }
+
+    spawn('mkdir', [currDir + '/src/page/' + name])
         .then(function () {
-            copyPlainFile('module/' + type, 'src/page/' + name);
-            addInfo2Index(process.cwd() + '/src/page/' + name + '/index.js');
+            copyPlainFile('module/' + type, currDir + '/src/page/' + name);
+            addInfo2Index(currDir + '/src/page/' + name + '/index.js');
             util.logSuccess('添加模块 ' + name + ' 完成');
         });
 };
@@ -29,7 +41,7 @@ module.exports = function (name, type) {
  */
 function copyPlainFile(sourceDir, destDir) {
     sourceDir = path.resolve(__dirname, '../template/' + sourceDir);
-    cp('-r', sourceDir + '/', process.cwd() + '/' + destDir + '/');
+    cp('-r', sourceDir + '/', destDir + '/');
 };
 
 

@@ -31,6 +31,9 @@ program
         else if (this.redux) {
             add(this.redux, 'redux');
         }
+        else {
+            console.log('当前命令无效');
+        }
     });
 
 
